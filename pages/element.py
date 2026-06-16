@@ -34,6 +34,15 @@ class Element:
         except:
             return False
 
+    def is_clickable(self):
+        """Check if element is clickable (not blocked, not disabled)"""
+        try:
+            # Use EC.element_to_be_clickable to check
+            self._wait.until(EC.element_to_be_clickable(self.locator))
+            return True
+        except:
+            return False
+
     @property
     def attribute(self, name: str):
         return self._element.get_attribute(name)

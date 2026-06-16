@@ -1,6 +1,8 @@
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from pages.element import FindBy
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class LoginPage(BasePage):
@@ -26,6 +28,7 @@ class LoginPage(BasePage):
         self.password_input.send_keys(password)
         self.login_button.click()
 
+        
     def get_login_error(self) -> str:
         """Get login error message text"""
         try:
@@ -35,7 +38,12 @@ class LoginPage(BasePage):
 
     @property
     def has_login_error(self) -> bool:
-        """Check if login error is displayed on page"""
+        """Check if login error is displayed on page""" 
+        return self.form_error.is_displayed()
+
+
+    def is_error_displayed(self) -> bool:
+        """Check if error element is visible (used in wait conditions)"""
         try:
             return self.form_error.is_displayed()
         except:
