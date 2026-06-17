@@ -244,3 +244,20 @@ def driver():
         driver.quit()
     except:
         pass
+
+
+@pytest.fixture(scope="class")
+def class_driver():
+    """Fixture: create Chrome driver per test class, auto-quit after all tests."""
+    options = Options()
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1280,720')
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+    yield driver
+    try:
+        driver.quit()
+    except:
+        pass
