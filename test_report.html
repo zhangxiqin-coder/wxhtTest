@@ -2,256 +2,180 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>登录功能测试报告</title>
+    <title>Test Report - 2026-06-17 10:01:38</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .header {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .summary {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            font-size: 18px;
-        }
-        .pass { color: #10b981; font-weight: bold; }
-        .fail { color: #ef4444; font-weight: bold; }
-        .test-case {
-            background: white;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .test-case.pass { border-left: 4px solid #10b981; }
-        .test-case.fail { border-left: 4px solid #ef4444; }
-        .test-name { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-        .status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; }
-        .status.pass { background: #d1fae5; color: #065f46; }
-        .status.fail { background: #fee2e2; color: #7f1d1d; }
-        .details { margin-top: 10px; color: #4b5563; }
-        .screenshot-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .screenshot {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .screenshot img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .screenshot-label {
-            padding: 8px;
-            background: #f9fafb;
-            text-align: center;
-            font-size: 12px;
-        }
+        body { font-family: 'Consolas', 'Courier New', monospace; margin: 20px; background: #1e1e1e; color: #d4d4d4; }
+        h1 { color: #569cd6; border-bottom: 2px solid #569cd6; padding-bottom: 10px; }
+        .summary { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .summary .timestamp { color: #608b4e; }
+        .summary .stats { margin-top: 10px; }
+        .pass { color: #4ec9b0; } .fail { color: #f14c4c; } .skip { color: #dcdcaa; }
+        .test-case { background: #2d2d2d; margin: 15px 0; border-radius: 8px; border-left: 4px solid #569cd6; }
+        .test-case.pass { border-left-color: #4ec9b0; }
+        .test-case.fail { border-left-color: #f14c4c; }
+        .case-header { padding: 15px; cursor: pointer; }
+        .case-header:hover { background: #3c3c3c; }
+        .case-name { font-size: 16px; font-weight: bold; color: #569cd6; }
+        .case-time { font-size: 12px; color: #808080; margin-top: 5px; }
+        .case-content { display: none; padding: 15px; border-top: 1px solid #3c3c3c; }
+        .case-content.show { display: block; }
+        .log-entry { padding: 5px 0; border-bottom: 1px solid #3c3c3c; }
+        .log-time { color: #608b4e; }
+        .screenshot { margin: 10px 0; }
+        .screenshot img { max-width: 400px; border: 2px solid #3c3c3c; border-radius: 4px; }
+        .screenshot-label { color: #808080; font-size: 12px; margin-top: 5px; }
+        .error { background: #3c1e1e; padding: 10px; border-radius: 4px; color: #f14c4c; margin-top: 10px; }
+        th { background: #0e639c !important; color: white !important; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #3c3c3c; padding: 10px; text-align: left; }
     </style>
+    <script>
+        function toggleCase(id) {
+            var content = document.getElementById(id);
+            content.classList.toggle('show');
+        }
+    </script>
 </head>
 <body>
-    <div class="header">
-        <h1>🏠 房东网登录功能测试报告</h1>
-        <p>测试时间: 2026-06-16</p>
-    </div>
-
+    <h1>Test Report</h1>
     <div class="summary">
-        <h2>📊 测试总结</h2>
+        <p><strong>Report Time:</strong> <span class="timestamp">2026-06-17 10:01:38</span></p>
         <div class="stats">
-            <div>
-            <span>总测试数: <strong>7</strong></span>
-            </div>
-            <div>
-            <span class="pass">✓ 通过: 5</span>
-            </div>
-            <div>
-            <span class="fail">✗ 失败: 2</span>
-            </div>
+            <span class="pass">PASS: 4</span> | 
+            <span class="fail">FAIL: 0</span> | 
+            <span class="skip">SKIP: 3</span> | 
+            <span>Total: 7</span>
         </div>
     </div>
-
-    <h2>🧪 详细测试结果</h2>
-
+    <h2>Test Cases</h2>
     <div class="test-case pass">
-        <div class="test-name">
-            TC001 - 正确账号密码登录
-            <span class="status pass">✓ 通过</span>
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC001_CorrectCredentials_')">
+            <div class="case-name">PASS - test_login_scenario[TC001_CorrectCredentials]</div>
+            <div class="case-time">Start: 2026-06-17 09:55:45.203 | End: 2026-06-17 09:56:06.050 | Duration: 0:00:20.847000</div>
         </div>
-        <div class="details">
-            <p><strong>描述：</strong>使用正确的用户名和密码登录，应成功</p>
-            <p><strong>测试用户：</strong>testuser3 / 123456</p>
-            <p><strong>期望结果：</strong>成功</p>
-            <p><strong>实际结果：</strong>成功 - 跳转到 rooms 页面</p>
-        </div>
-        <div class="screenshot-container">
-            <div class="screenshot">
-                <img src="test_screenshots/TC001_正确账号密码登录_1_loaded.png" alt="加载页面">
-                <div class="screenshot-label">1. 页面加载</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC001_正确账号密码登录_2_filled.png" alt="填写表单">
-                <div class="screenshot-label">2. 填写表单</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC001_正确账号密码登录_3_after_login.png" alt="登录后">
-                <div class="screenshot-label">3. 登录成功</div>
-            </div>
+        <div class="case-content" id="test_login_scenario_TC001_CorrectCredentials_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:55:48.135] === Starting test with user: testuser3 ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:48.135] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:54.642] Login page loaded: https://fangdong.fun/login?redirect=/utility</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:55.081] Filling username: 'testuser3'</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:55.161] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:55.602] Clicking login button...</span></div>
+            <div class="log-entry"><span class="log-time">[09:55:55.660] Waiting for page reaction...</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:05.949] WARNING: URL did not change within timeout</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:06.048] Dashboard displayed: True</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:06.049] PASS: Login successful as expected</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:06.049] === Test completed ===</span></div>
+            <h4>Screenshots:</h4>
         </div>
     </div>
-
-    <div class="test-case fail">
-        <div class="test-name">
-            TC002 - 错误密码登录
-            <span class="status fail">✗ 超时</span>
-        </div>
-        <div class="details">
-            <p><strong>描述：</strong>使用正确的用户名但错误的密码登录，应失败</p>
-            <p><strong>测试用户：</strong>testuser3 / wrongpassword</p>
-            <p><strong>期望结果：</strong>失败</p>
-        </div>
-    </div>
-
     <div class="test-case pass">
-        <div class="test-name">
-            TC003 - 不存在的用户名
-            <span class="status pass">✓ 通过</span>
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC002_WrongPassword_')">
+            <div class="case-name">PASS - test_login_scenario[TC002_WrongPassword]</div>
+            <div class="case-time">Start: 2026-06-17 09:56:32.522 | End: 2026-06-17 09:56:42.434 | Duration: 0:00:09.912000</div>
         </div>
-        <div class="details">
-            <p><strong>描述：</strong>使用不存在的用户名登录，应失败</p>
-            <p><strong>测试用户：</strong>nonexistentuser / 123456</p>
-            <p><strong>期望结果：</strong>失败</p>
-            <p><strong>实际结果：</strong>失败 - 仍在登录页</p>
-        </div>
-        <div class="screenshot-container">
-            <div class="screenshot">
-                <img src="test_screenshots/TC003_不存在的用户名_1_loaded.png" alt="加载页面">
-                <div class="screenshot-label">1. 页面加载</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC003_不存在的用户名_2_filled.png" alt="填写表单">
-                <div class="screenshot-label">2. 填写表单</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC003_不存在的用户名_3_after_login.png" alt="登录后">
-                <div class="screenshot-label">3. 登录失败</div>
-            </div>
+        <div class="case-content" id="test_login_scenario_TC002_WrongPassword_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:56:36.347] === Starting test with user: testuser3 ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:36.347] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:40.953] Login page loaded: https://fangdong.fun/</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:41.366] Filling username: 'testuser3'</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:41.431] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:41.887] Clicking login button...</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:41.941] Waiting for page reaction...</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:42.414] Dashboard displayed: False</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:42.433] PASS: Login failed as expected with error: 用户名或密码错误</span></div>
+            <div class="log-entry"><span class="log-time">[09:56:42.433] === Test completed ===</span></div>
+            <h4>Screenshots:</h4>
         </div>
     </div>
-
     <div class="test-case pass">
-        <div class="test-name">
-            TC004 - 空用户名
-            <span class="status pass">✓ 通过</span>
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC003_NonexistentUsername_')">
+            <div class="case-name">PASS - test_login_scenario[TC003_NonexistentUsername]</div>
+            <div class="case-time">Start: 2026-06-17 09:57:08.920 | End: 2026-06-17 09:57:27.618 | Duration: 0:00:18.698000</div>
         </div>
-        <div class="details">
-            <p><strong>描述：</strong>用户名为空，应失败</p>
-            <p><strong>测试用户：</strong>(空) / 123456</p>
-            <p><strong>期望结果：</strong>失败</p>
-            <p><strong>实际结果：</strong>失败 - 仍在登录页</p>
-        </div>
-        <div class="screenshot-container">
-            <div class="screenshot">
-                <img src="test_screenshots/TC004_空用户名_1_loaded.png" alt="加载页面">
-                <div class="screenshot-label">1. 页面加载</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC004_空用户名_2_filled.png" alt="填写表单">
-                <div class="screenshot-label">2. 填写表单</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC004_空用户名_3_after_login.png" alt="登录后">
-                <div class="screenshot-label">3. 登录失败</div>
-            </div>
+        <div class="case-content" id="test_login_scenario_TC003_NonexistentUsername_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:57:11.094] === Starting test with user: nonexistentuser ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:11.094] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:25.852] Login page loaded: https://fangdong.fun/login?redirect=/utility</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:26.291] Filling username: 'nonexistentuser'</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:26.368] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:26.971] Clicking login button...</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:27.050] Waiting for page reaction...</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:27.597] Dashboard displayed: False</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:27.618] PASS: Login failed as expected with error: 用户名或密码错误</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:27.618] === Test completed ===</span></div>
+            <h4>Screenshots:</h4>
         </div>
     </div>
-
-    <div class="test-case fail">
-        <div class="test-name">
-            TC005 - 空密码
-            <span class="status fail">✗ 超时</span>
+    <div class="test-case skip">
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC004_EmptyUsername_')">
+            <div class="case-name">SKIP - test_login_scenario[TC004_EmptyUsername]</div>
+            <div class="case-time">Start: 2026-06-17 09:57:54.100 | End: 2026-06-17 09:58:18.133 | Duration: 0:00:24.033000</div>
         </div>
-        <div class="details">
-            <p><strong>描述：</strong>密码为空，应失败</p>
-            <p><strong>测试用户：</strong>testuser3 / (空)</p>
-            <p><strong>期望结果：</strong>失败</p>
+        <div class="case-content" id="test_login_scenario_TC004_EmptyUsername_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:57:56.927] === Starting test with user:  ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:57:56.927] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[09:58:06.355] Login page loaded: https://fangdong.fun/login?redirect=/utility</span></div>
+            <div class="log-entry"><span class="log-time">[09:58:06.857] Filling username: ''</span></div>
+            <div class="log-entry"><span class="log-time">[09:58:06.933] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[09:58:07.489] Clicking login button...</span></div>
+            <h4>Screenshots:</h4>
         </div>
     </div>
-
+    <div class="test-case skip">
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC005_EmptyPassword_')">
+            <div class="case-name">SKIP - test_login_scenario[TC005_EmptyPassword]</div>
+            <div class="case-time">Start: 2026-06-17 09:58:44.583 | End: 2026-06-17 09:59:29.954 | Duration: 0:00:45.371000</div>
+        </div>
+        <div class="case-content" id="test_login_scenario_TC005_EmptyPassword_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:58:46.431] === Starting test with user: testuser3 ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:58:46.431] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[09:59:18.699] Login page loaded: https://fangdong.fun/login?redirect=/utility</span></div>
+            <div class="log-entry"><span class="log-time">[09:59:19.105] Filling username: 'testuser3'</span></div>
+            <div class="log-entry"><span class="log-time">[09:59:19.183] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[09:59:19.636] Clicking login button...</span></div>
+            <h4>Screenshots:</h4>
+        </div>
+    </div>
+    <div class="test-case skip">
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC006_AllEmpty_')">
+            <div class="case-name">SKIP - test_login_scenario[TC006_AllEmpty]</div>
+            <div class="case-time">Start: 2026-06-17 09:59:56.439 | End: 2026-06-17 10:00:27.294 | Duration: 0:00:30.855000</div>
+        </div>
+        <div class="case-content" id="test_login_scenario_TC006_AllEmpty_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[09:59:59.317] === Starting test with user:  ===</span></div>
+            <div class="log-entry"><span class="log-time">[09:59:59.317] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[10:00:15.528] Login page loaded: https://fangdong.fun/</span></div>
+            <div class="log-entry"><span class="log-time">[10:00:15.610] Filling username: ''</span></div>
+            <div class="log-entry"><span class="log-time">[10:00:16.690] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[10:00:17.125] Clicking login button...</span></div>
+            <h4>Screenshots:</h4>
+        </div>
+    </div>
     <div class="test-case pass">
-        <div class="test-name">
-            TC006 - 全空值
-            <span class="status pass">✓ 通过</span>
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC007_SpecialCharsPassword_')">
+            <div class="case-name">PASS - test_login_scenario[TC007_SpecialCharsPassword]</div>
+            <div class="case-time">Start: 2026-06-17 10:00:53.744 | End: 2026-06-17 10:01:12.223 | Duration: 0:00:18.479000</div>
         </div>
-        <div class="details">
-            <p><strong>描述：</strong>用户名和密码都为空，应失败</p>
-            <p><strong>测试用户：</strong>(空) / (空)</p>
-            <p><strong>期望结果：</strong>失败</p>
-            <p><strong>实际结果：</strong>失败 - 仍在登录页</p>
-        </div>
-        <div class="screenshot-container">
-            <div class="screenshot">
-                <img src="test_screenshots/TC006_全空值_1_loaded.png" alt="加载页面">
-                <div class="screenshot-label">1. 页面加载</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC006_全空值_2_filled.png" alt="填写表单">
-                <div class="screenshot-label">2. 填写表单</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC006_全空值_3_after_login.png" alt="登录后">
-                <div class="screenshot-label">3. 登录失败</div>
-            </div>
+        <div class="case-content" id="test_login_scenario_TC007_SpecialCharsPassword_">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[10:00:55.488] === Starting test with user: testuser3 ===</span></div>
+            <div class="log-entry"><span class="log-time">[10:00:55.488] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:08.574] Login page loaded: https://fangdong.fun/</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:08.667] Filling username: 'testuser3'</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:11.267] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:11.729] Clicking login button...</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:11.784] Waiting for page reaction...</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:12.207] Dashboard displayed: False</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:12.223] PASS: Login failed as expected with error: 用户名或密码错误</span></div>
+            <div class="log-entry"><span class="log-time">[10:01:12.223] === Test completed ===</span></div>
+            <h4>Screenshots:</h4>
         </div>
     </div>
-
-    <div class="test-case pass">
-        <div class="test-name">
-            TC007 - 特殊字符密码
-            <span class="status pass">✓ 通过</span>
-        </div>
-        <div class="details">
-            <p><strong>描述：</strong>密码包含特殊字符，应该失败</p>
-            <p><strong>测试用户：</strong>testuser3 / !@#$%^&*()</p>
-            <p><strong>期望结果：</strong>失败</p>
-            <p><strong>实际结果：</strong>失败 - 仍在登录页</p>
-        </div>
-        <div class="screenshot-container">
-            <div class="screenshot">
-                <img src="test_screenshots/TC007_特殊字符密码_1_loaded.png" alt="加载页面">
-                <div class="screenshot-label">1. 页面加载</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC007_特殊字符密码_2_filled.png" alt="填写表单">
-                <div class="screenshot-label">2. 填写表单</div>
-            </div>
-            <div class="screenshot">
-                <img src="test_screenshots/TC007_特殊字符密码_3_after_login.png" alt="登录后">
-                <div class="screenshot-label">3. 登录失败</div>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>

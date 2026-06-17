@@ -22,6 +22,18 @@ class LoginPage(BasePage):
         """Open login page"""
         self.open(self.url)
 
+    def fill_username(self, username: str):
+        """Fill username input"""
+        self.username_input.send_keys(username)
+
+    def fill_password(self, password: str):
+        """Fill password input"""
+        self.password_input.send_keys(password)
+
+    def click_login(self):
+        """Click login button"""
+        self.login_button.click()
+
     def login(self, username: str, password: str):
         """Perform login operation"""
         self.username_input.send_keys(username)

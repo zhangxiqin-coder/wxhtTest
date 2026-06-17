@@ -47,50 +47,92 @@ TEST_CASES = [
 
 # ── Helpers ──
 
-def _do_login(driver, username: str, password: str, expected_success: bool, expected_error: str | None):
+def _do_login(driver, test_logger, username: str, password: str, expected_success: bool, expected_error: str | None):
+    # 处理空用户名用于文件名
+    username_for_file = username if username else "empty"
+    
     login_page = LoginPage(driver)
     dashboard_page = DashboardPage(driver)
 
     # 1. Open login page
+    test_logger.log("Opening login page...")
     login_page.open_page()
-    time.sleep(1)
-    current_url = driver.current_url
-    print(current_url)
-    # 2. Login
-    login_page.login(username, password)
-
-
-    # 3. Wait for page to react - first try for URL change, then check for error
-    #    Use try-except to avoid exceptions from page changes
+    test_logger.log(f"Login page loaded: {driver.current_url}")
+    
+    # Take screenshot
+    driver.save_screenshot(f"test_screenshots/test_login_scenario_{username_for_file}_1_loaded.png")
+    test_logger.screenshot("page_loaded")
+    
+    # 2. Fill login form
+    test_logger.log(f"Filling username: '{username}'")
+    login_page.fill_username(username)
+    
+    test_logger.log(f"Filling password: '******'")
+    login_page.fill_password(password)
+    driver.save_screenshot(f"test_screenshots/test_login_scenario_{username_for_file}_2_filled.png")
+    test_logger.screenshot("form_filled")
+    
+    # 3. Click login button
+    test_logger.log("Clicking login button...")
+    login_page.click_login()
+    
+    # 4. Wait for page to react
+    test_logger.log("Waiting for page reaction...")
     if expected_success:
         try:
-            WebDriverWait(driver, 10).until(
-                lambda d: d.current_url != current_url
-            )
+            WebDriverWait(driver, 10).until(lambda d: d.current_url != driver.current_url)
+            test_logger.log(f"URL changed to: {driver.current_url}")
         except TimeoutException:
-            # If URL didn't change, check if error is displayed
-            pass
-    else:
-        # If expected error, check if error is displayed
-        assert login_page.is_error_displayed(), \
-            f"Expected error containing '{expected_error}', but none displayed"
-
-    time.sleep(1)
+            test_logger.log("WARNING: URL did not change within timeout")
+    
+    driver.save_screenshot(f"test_screenshots/test_login_scenario_{username_for_file}_3_after_login.png")
+    test_logger.screenshot("after_login")
+    
+    # 5. Verify result
     actual_success = dashboard_page.is_dashboard_displayed
-
-    # Verify result
-    assert actual_success == expected_success, \
-        f"Expected success={expected_success}, got success={actual_success}"
-
-    # Check error message if expected
-    if not actual_success and expected_error:
-        actual_error = login_page.get_login_error()
-        assert expected_error in actual_error, \
-            f"Expected error containing '{expected_error}', got '{actual_error}'"
+    test_logger.log(f"Dashboard displayed: {actual_success}")
+    
+    if expected_success:
+        assert actual_success, f"Expected success but got failure"
+        test_logger.log("PASS: Login successful as expected")
+    else:
+        if actual_success:
+            test_logger.log("FAIL: Login succeeded but expected failure")
+            assert False, "Expected failure but login succeeded"
+        else:
+            error_msg = login_page.get_login_error()
+            test_logger.log(f"PASS: Login failed as expected with error: {error_msg}")
+            if expected_error:
+                assert expected_error in error_msg, f"Expected error '{expected_error}' but got '{error_msg}'"
 
 # ── Tests ──
 
-@pytest.mark.parametrize("username,password,expected_success,expected_error", TEST_CASES)
-def test_login_scenario(driver, username, password, expected_success, expected_error):
-    """Test login with various credentials"""
-    _do_login(driver, username, password, expected_success, expected_error)
+class TestLoginSuite:
+    """登录功能测试套件"""
+
+    def setup_method(self):
+        """每个测试用例执行前的setup"""
+        print("\n[Setup] 准备测试环境...")
+
+    def teardown_method(self, method):
+        """每个测试用例执行后的teardown"""
+        print("\n[Teardown] 清理浏览器...")
+        if hasattr(self, 'driver') and self.driver:
+            try:
+                self.driver.quit()
+            except Exception as e:
+                print(f"[Teardown] 退出浏览器时出错: {e}")
+
+    @pytest.fixture(autouse=True)
+    def _setup_driver(self, driver, test_logger):
+        """自动注入driver和logger fixture"""
+        self.driver = driver
+        self.test_logger = test_logger
+        yield driver
+
+    @pytest.mark.parametrize("username,password,expected_success,expected_error", TEST_CASES)
+    def test_login_scenario(self, username, password, expected_success, expected_error):
+        """Test login with various credentials"""
+        self.test_logger.log(f"=== Starting test with user: {username} ===")
+        _do_login(self.driver, self.test_logger, username, password, expected_success, expected_error)
+        self.test_logger.log(f"=== Test completed ===")
