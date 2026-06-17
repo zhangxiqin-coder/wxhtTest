@@ -15,6 +15,8 @@ class LoginPage(BasePage):
     register_link = FindBy(By.XPATH, "//a[contains(text(),'去注册')]")
     form_error = FindBy(By.XPATH, "//div[contains(@class,'form-error')]")
 
+
+
     # Page URL
     url = "https://fangdong.fun/"
 

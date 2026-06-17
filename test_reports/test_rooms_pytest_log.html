@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Report - test_rooms_pytest.py</title>
+    <style>
+        body { font-family: 'Consolas', 'Courier New', monospace; margin: 20px; background: #1e1e1e; color: #d4d4d4; }
+        h1 { color: #569cd6; border-bottom: 2px solid #569cd6; padding-bottom: 10px; }
+        .summary { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .summary .timestamp { color: #608b4e; }
+        .summary .stats { margin-top: 10px; }
+        .pass { color: #4ec9b0; } .fail { color: #f14c4c; } .skip { color: #dcdcaa; }
+        .test-case { background: #2d2d2d; margin: 15px 0; border-radius: 8px; border-left: 4px solid #569cd6; }
+        .test-case.pass { border-left-color: #4ec9b0; }
+        .test-case.fail { border-left-color: #f14c4c; }
+        .case-header { padding: 15px; cursor: pointer; }
+        .case-header:hover { background: #3c3c3c; }
+        .case-name { font-size: 16px; font-weight: bold; color: #569cd6; }
+        .case-time { font-size: 12px; color: #808080; margin-top: 5px; }
+        .case-content { display: none; padding: 15px; border-top: 1px solid #3c3c3c; }
+        .case-content.show { display: block; }
+        .log-entry { padding: 5px 0; border-bottom: 1px solid #3c3c3c; }
+        .log-time { color: #608b4e; }
+        .screenshot { margin: 10px 0; }
+        .screenshot img { max-width: 400px; border: 2px solid #3c3c3c; border-radius: 4px; }
+        .screenshot-label { color: #808080; font-size: 12px; margin-top: 5px; }
+        .error { background: #3c1e1e; padding: 10px; border-radius: 4px; color: #f14c4c; margin-top: 10px; }
+    </style>
+    <script>
+        function toggleCase(id) {
+            var content = document.getElementById(id);
+            content.classList.toggle('show');
+        }
+    </script>
+</head>
+<body>
+    <h1>Test Report: test_rooms_pytest.py</h1>
+    <div class="summary">
+        <p><strong>Report Time:</strong> <span class="timestamp">2026-06-17 12:46:57</span></p>
+        <div class="stats">
+            <span class="pass">PASS: 1</span> | 
+            <span class="fail">FAIL: 0</span> | 
+            <span class="skip">SKIP: 0</span> | 
+            <span>Total: 1</span>
+        </div>
+    </div>
+    <h2>Test Cases</h2>
+    <div class="test-case pass">
+        <div class="case-header" onclick="toggleCase('test_room_rows_exist')">
+            <div class="case-name">PASS - test_room_rows_exist</div>
+            <div class="case-time">Start: 2026-06-17 12:46:20.959 | End: 2026-06-17 12:46:34.350 | Duration: 0:00:13.391000</div>
+        </div>
+        <div class="case-content" id="test_room_rows_exist">
+            <h4>Execution Logs:</h4>
+            <div class="log-entry"><span class="log-time">[12:46:31.344] === Starting test: test_room_rows_exist ===</span></div>
+            <div class="log-entry"><span class="log-time">[12:46:32.338] Rooms page opened</span></div>
+            <div class="log-entry"><span class="log-time">[12:46:34.349] Room rows found: 5</span></div>
+            <div class="log-entry"><span class="log-time">[12:46:34.349] PASS: Room rows exist</span></div>
+        </div>
+    </div>
+</body>
+</html>

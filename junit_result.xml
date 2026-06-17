@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="217.089" timestamp="2026-06-17T11:06:30.639827+08:00" hostname="DESKTOP-CCIQROO"><testcase classname="test_rooms_pytest.TestRoomsSuite" name="test_room_rows_exist" time="212.121"><error message="failed on setup with &quot;selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed&#10;from unknown error: web view not found&#10;  (Session info: chrome=148.0.7778.217)&#10;Stacktrace:&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb27de5+14895]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb27e50+14900]&#10;&#09;chromedriver!(No symbol) [0x7ff76e88d5ad]&#10;&#09;chromedriver!(No symbol) [0x7ff76e8640f2]&#10;&#09;chromedriver!(No symbol) [0x7ff76e916f56]&#10;&#09;chromedriver!(No symbol) [0x7ff76e934172]&#10;&#09;chromedriver!(No symbol) [0x7ff76e8d9df8]&#10;&#09;chromedriver!(No symbol) [0x7ff76e8dace3]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76ee3cc49+3296f9]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76ee37375+323e25]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76ee5bc82+348732]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb46045+32af5]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb4ecec+3b79c]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb31bc4+1e674]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb31d54+1e804]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff76eb160e7+2b97]&#10;&#09;KERNEL32!BaseThreadInitThunk [0x7ffd411f7374+14]&#10;&#09;ntdll!RtlUserThreadStart [0x7ffd415fcc91+21]&quot;">class_driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="1c3bb0355bdef6a83bb80c9dc0e5f195")&gt;
+
+    @pytest.fixture(scope="class")
+    def suite_login(class_driver):
+        """Suite setup - 登录一次，所有测试共享同一个会话"""
+        print("\n=== Suite Setup: 登录系统 ===")
+&gt;       do_login(class_driver)
+
+test_rooms_pytest.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="1c3bb0355bdef6a83bb80c9dc0e5f195")&gt;
+username = 'testuser3', password = '123456'
+
+    def do_login(driver, username="testuser3", password="123456"):
+        """Login helper - navigate to login page and log in"""
+        login_page = LoginPage(driver)
+&gt;       login_page.open_page()
+
+helpers.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pages.login_page.LoginPage object at 0x000001D4E998B250&gt;
+
+    def open_page(self):
+        """Open login page"""
+&gt;       self.open(self.url)
+
+pages\login_page.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pages.login_page.LoginPage object at 0x000001D4E998B250&gt;
+url = 'https://fangdong.fun/'
+
+    def open(self, url: str):
+&gt;       self.driver.get(url)
+
+pages\base_page.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="1c3bb0355bdef6a83bb80c9dc0e5f195")&gt;
+url = 'https://fangdong.fun/'
+
+    def get(self, url: str) -&gt; None:
+        """Navigate the browser to the specified URL.
+    
+        The method does not return until the page is fully loaded (i.e. the
+        onload event has fired) in the current window or tab.
+    
+        Args:
+            url: The URL to be opened by the browser. Must include the protocol
+                (e.g., http://, https://).
+    
+        Example:
+            `driver.get("https://example.com")`
+        """
+&gt;       self.execute(Command.GET, {"url": url})
+
+C:\Python314\Lib\site-packages\selenium\webdriver\remote\webdriver.py:512: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="1c3bb0355bdef6a83bb80c9dc0e5f195")&gt;
+driver_command = 'get', params = {'url': 'https://fangdong.fun/'}
+
+    def execute(
+        self,
+        driver_command: str | Generator[dict[str, Any], Any, Any],
+        params: dict[str, Any] | None = None,
+    ) -&gt; Any:
+        """Sends a command to be executed by a command.CommandExecutor.
+    
+        Args:
+            driver_command: The name of the command to execute as a string.
+                Can also be a BiDi protocol command generator.
+            params: A dictionary of named parameters to send with the command.
+                Ignored when ``driver_command`` is a BiDi generator.
+    
+        Returns:
+            The command's JSON response loaded into a dictionary object.
+        """
+        # Handle BiDi generator commands
+        if inspect.isgenerator(driver_command):
+            # BiDi command: route through the WebSocket connection, not the
+            # HTTP RemoteConnection which only accepts (command, params) pairs.
+            if not self._websocket_connection:
+                self._start_bidi()
+            assert self._websocket_connection is not None
+            return self._websocket_connection.execute(driver_command)
+    
+        # Legacy WebDriver command: handle normally
+        params = self._wrap_value(params)
+    
+        if self.session_id:
+            if not params:
+                params = {"sessionId": self.session_id}
+            elif "sessionId" not in params:
+                params["sessionId"] = self.session_id
+    
+        response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+    
+        if response:
+&gt;           self.error_handler.check_response(response)
+
+C:\Python314\Lib\site-packages\selenium\webdriver\remote\webdriver.py:492: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x000001D4E99ADBE0&gt;
+response = {'status': 404, 'value': '{"value":{"error":"no such window","message":"no such window: target window already closed\\...7+2b97]\\n\\tKERNEL32!BaseThreadInitThunk [0x7ffd411f7374+14]\\n\\tntdll!RtlUserThreadStart [0x7ffd415fcc91+21]\\n"}}'}
+
+    def check_response(self, response: dict[str, Any]) -&gt; None:
+        """Check that a JSON response from the WebDriver does not have an error.
+    
+        Args:
+            response: The JSON response from the WebDriver server as a dictionary
+                object.
+    
+        Raises:
+            WebDriverException: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                try:
+                    value = json.loads(value_json)
+                    if isinstance(value, dict):
+                        if len(value) == 1:
+                            value = value["value"]
+                        status = value.get("error", None)
+                        if not status:
+                            status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                            message = value.get("value") or value.get("message")
+                            if not isinstance(message, str):
+                                value = message
+                                message = message.get("message") if isinstance(message, dict) else None
+                        else:
+                            message = value.get("message", None)
+                except ValueError:
+                    pass
+    
+        exception_class: type[WebDriverException]
+        e = ErrorCode()
+        error_codes = [item for item in dir(e) if not item.startswith("__")]
+        for error_code in error_codes:
+            error_info = getattr(ErrorCode, error_code)
+            if isinstance(error_info, list) and status in error_info:
+                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)
+                break
+        else:
+            exception_class = WebDriverException
+    
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+    
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+    
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "&lt;anonymous&gt;")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "&lt;anonymous&gt;")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)
+&gt;       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.NoSuchWindowException: Message: no such window: target window already closed
+E       from unknown error: web view not found
+E         (Session info: chrome=148.0.7778.217)
+E       Stacktrace:
+E       	chromedriver!GetHandleVerifier [0x7ff76eb27de5+14895]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb27e50+14900]
+E       	chromedriver!(No symbol) [0x7ff76e88d5ad]
+E       	chromedriver!(No symbol) [0x7ff76e8640f2]
+E       	chromedriver!(No symbol) [0x7ff76e916f56]
+E       	chromedriver!(No symbol) [0x7ff76e934172]
+E       	chromedriver!(No symbol) [0x7ff76e8d9df8]
+E       	chromedriver!(No symbol) [0x7ff76e8dace3]
+E       	chromedriver!GetHandleVerifier [0x7ff76ee3cc49+3296f9]
+E       	chromedriver!GetHandleVerifier [0x7ff76ee37375+323e25]
+E       	chromedriver!GetHandleVerifier [0x7ff76ee5bc82+348732]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb46045+32af5]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb4ecec+3b79c]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb31bc4+1e674]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb31d54+1e804]
+E       	chromedriver!GetHandleVerifier [0x7ff76eb160e7+2b97]
+E       	KERNEL32!BaseThreadInitThunk [0x7ffd411f7374+14]
+E       	ntdll!RtlUserThreadStart [0x7ffd415fcc91+21]
+
+C:\Python314\Lib\site-packages\selenium\webdriver\remote\errorhandler.py:232: NoSuchWindowException</error></testcase></testsuite></testsuites>

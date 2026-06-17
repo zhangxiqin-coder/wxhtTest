@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.14.4 on win32)" generated="2026-06-17T13:37:40.022043" rpa="false" schemaversion="5">
+<suite id="s1" name="Test Login Robot" source="D:\codespace\testProjectPython\wxhtTest\tests\robot\test_login_robot.robot">
+<test id="s1-t1" name="TC001_CorrectCredentials" line="15">
+<kw name="Open Browser To Login Page">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:37:40.304026" level="INFO">Opening browser 'Chrome' to base url 'https://fangdong.fun/login'.</msg>
+<arg>${LOGIN_URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-06-17T13:37:40.303765" elapsed="14.126446"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>10s</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2026-06-17T13:37:54.430422" elapsed="0.000813"/>
+</kw>
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>0.5s</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2026-06-17T13:37:54.431362" elapsed="0.000172"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-06-17T13:37:54.431637" elapsed="0.561338"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:37:40.303047" elapsed="14.690061"/>
+</kw>
+<kw name="Input Username">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:37:54.994175" level="INFO">Typing text 'testuser3' into text field '//input[@type='text']'.</msg>
+<arg>//input[@type='text']</arg>
+<arg>${username}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:37:54.993757" elapsed="1.567527"/>
+</kw>
+<arg>testuser3</arg>
+<status status="PASS" start="2026-06-17T13:37:54.993424" elapsed="1.568115"/>
+</kw>
+<kw name="Input Password">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:37:56.563150" level="INFO">Typing text '123456' into text field '//input[@type='password']'.</msg>
+<arg>//input[@type='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:37:56.562677" elapsed="1.645764"/>
+</kw>
+<arg>123456</arg>
+<status status="PASS" start="2026-06-17T13:37:56.562105" elapsed="1.646462"/>
+</kw>
+<kw name="Click Login Button">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:37:58.209301" level="INFO">Clicking button '//button[contains(text(), '登录')]'.</msg>
+<arg>//button[contains(text(), '登录')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:37:58.209104" elapsed="2.585378"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:37:58.208864" elapsed="2.585811"/>
+</kw>
+<kw name="Wait Until Dashboard Displayed">
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>房间管理</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-06-17T13:38:00.795566" elapsed="1.111406"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[contains(@class, 'el-table')]</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-06-17T13:38:01.907219" elapsed="1.026165"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:00.795144" elapsed="2.138766"/>
+</kw>
+<kw name="Close Browser" type="TEARDOWN">
+<kw name="Close All Browsers" owner="SeleniumLibrary">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-06-17T13:38:02.937287" elapsed="2.604542"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:02.935688" elapsed="2.606257"/>
+</kw>
+<doc>正确用户名密码登录</doc>
+<status status="PASS" start="2026-06-17T13:37:40.302173" elapsed="25.240011"/>
+</test>
+<test id="s1-t2" name="TC002_WrongPassword" line="25">
+<kw name="Open Browser To Login Page">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:05.543901" level="INFO">Opening browser 'Chrome' to base url 'https://fangdong.fun/login'.</msg>
+<arg>${LOGIN_URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-06-17T13:38:05.543701" elapsed="22.351699"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>10s</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2026-06-17T13:38:27.895649" elapsed="0.501502"/>
+</kw>
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>0.5s</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2026-06-17T13:38:28.397352" elapsed="0.000240"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-06-17T13:38:28.397717" elapsed="0.554891"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:05.543457" elapsed="23.409553"/>
+</kw>
+<kw name="Input Username">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:28.956294" level="INFO">Typing text 'testuser3' into text field '//input[@type='text']'.</msg>
+<arg>//input[@type='text']</arg>
+<arg>${username}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:28.955311" elapsed="1.703324"/>
+</kw>
+<arg>testuser3</arg>
+<status status="PASS" start="2026-06-17T13:38:28.954149" elapsed="1.704681"/>
+</kw>
+<kw name="Input Password">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:30.660143" level="INFO">Typing text 'wrongpassword' into text field '//input[@type='password']'.</msg>
+<arg>//input[@type='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:30.659746" elapsed="1.611335"/>
+</kw>
+<arg>wrongpassword</arg>
+<status status="PASS" start="2026-06-17T13:38:30.659280" elapsed="1.611928"/>
+</kw>
+<kw name="Click Login Button">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:32.271946" level="INFO">Clicking button '//button[contains(text(), '登录')]'.</msg>
+<arg>//button[contains(text(), '登录')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:32.271751" elapsed="2.575211"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:32.271509" elapsed="2.575589"/>
+</kw>
+<kw name="Wait Until Error Displayed">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class, 'form-error')]</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-06-17T13:38:34.847780" elapsed="1.205252"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:37.066732" level="INFO">Current page contains text '用户名或密码错误'.</msg>
+<arg>${expected_error}</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2026-06-17T13:38:36.053230" elapsed="1.013669"/>
+</kw>
+<arg>用户名或密码错误</arg>
+<status status="PASS" start="2026-06-17T13:38:34.847477" elapsed="2.219529"/>
+</kw>
+<kw name="Close Browser" type="TEARDOWN">
+<kw name="Close All Browsers" owner="SeleniumLibrary">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-06-17T13:38:37.067738" elapsed="2.616775"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:37.067462" elapsed="2.617253"/>
+</kw>
+<doc>错误密码登录</doc>
+<status status="PASS" start="2026-06-17T13:38:05.542868" elapsed="34.142205"/>
+</test>
+<test id="s1-t3" name="TC003_EmptyUsername" line="35">
+<kw name="Open Browser To Login Page">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:39.689860" level="INFO">Opening browser 'Chrome' to base url 'https://fangdong.fun/login'.</msg>
+<arg>${LOGIN_URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-06-17T13:38:39.689453" elapsed="8.798137"/>
+</kw>
+<kw name="Set Selenium Implicit Wait" owner="SeleniumLibrary">
+<arg>10s</arg>
+<doc>Sets the implicit wait value used by Selenium.</doc>
+<status status="PASS" start="2026-06-17T13:38:48.487887" elapsed="0.502163"/>
+</kw>
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>0.5s</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2026-06-17T13:38:48.990285" elapsed="0.000272"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-06-17T13:38:48.990711" elapsed="0.544638"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:39.688947" elapsed="9.846556"/>
+</kw>
+<kw name="Input Username">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:49.537072" level="INFO">Typing text '' into text field '//input[@type='text']'.</msg>
+<arg>//input[@type='text']</arg>
+<arg>${username}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:49.536734" elapsed="1.592568"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:49.535889" elapsed="1.593577"/>
+</kw>
+<kw name="Input Password">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:51.130537" level="INFO">Typing text '123456' into text field '//input[@type='password']'.</msg>
+<arg>//input[@type='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:51.130214" elapsed="1.562349"/>
+</kw>
+<arg>123456</arg>
+<status status="PASS" start="2026-06-17T13:38:51.129819" elapsed="1.562879"/>
+</kw>
+<kw name="Click Login Button">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-06-17T13:38:52.693505" level="INFO">Clicking button '//button[contains(text(), '登录')]'.</msg>
+<arg>//button[contains(text(), '登录')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-06-17T13:38:52.693291" elapsed="2.583912"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:52.693025" elapsed="2.584367"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[contains(text(), '登录')]</arg>
+<arg>timeout=5</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-06-17T13:38:55.277794" elapsed="1.020587"/>
+</kw>
+<kw name="Close Browser" type="TEARDOWN">
+<kw name="Close All Browsers" owner="SeleniumLibrary">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-06-17T13:38:56.299477" elapsed="2.606211"/>
+</kw>
+<status status="PASS" start="2026-06-17T13:38:56.299016" elapsed="2.606918"/>
+</kw>
+<doc>空用户名登录（预期超时）</doc>
+<tag>xfail</tag>
+<status status="PASS" start="2026-06-17T13:38:39.687461" elapsed="19.218798"/>
+</test>
+<doc>登录功能测试 - Robot Framework 示例</doc>
+<status status="PASS" start="2026-06-17T13:37:40.023262" elapsed="78.884653"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">xfail</stat>
+</tag>
+<suite>
+<stat name="Test Login Robot" id="s1" pass="3" fail="0" skip="0">Test Login Robot</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

@@ -75,7 +75,8 @@ class TestRoomsSuite:
         rooms = RoomsPage(self.driver)
         rooms.open_page()
         self.test_logger.log("Rooms page opened")
-        
+        # wait for room table to load data
+        time.sleep(2)
         rows = self.driver.find_elements("xpath", "//tr[contains(@class, 'el-table__row')]")
         self.test_logger.log(f"Room rows found: {len(rows)}")
         assert len(rows) > 0, "No room rows found in table"

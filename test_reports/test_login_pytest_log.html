@@ -36,7 +36,7 @@
 <body>
     <h1>Test Report: test_login_pytest.py</h1>
     <div class="summary">
-        <p><strong>Report Time:</strong> <span class="timestamp">2026-06-17 10:35:29</span></p>
+        <p><strong>Report Time:</strong> <span class="timestamp">2026-06-17 14:50:11</span></p>
         <div class="stats">
             <span class="pass">PASS: 1</span> | 
             <span class="fail">FAIL: 0</span> | 
@@ -46,17 +46,27 @@
     </div>
     <h2>Test Cases</h2>
     <div class="test-case pass">
-        <div class="case-header" onclick="toggleCase('test_case_1')">
-            <div class="case-name">PASS - test_case_1</div>
-            <div class="case-time">Start: 2026-06-17 10:00:00.000 | End: 2026-06-17 10:00:05.000 | Duration: 0:00:05</div>
+        <div class="case-header" onclick="toggleCase('test_login_scenario_TC001_CorrectCredentials_')">
+            <div class="case-name">PASS - test_login_scenario[TC001_CorrectCredentials]</div>
+            <div class="case-time">Start: 2026-06-17 14:49:31.604 | End: 2026-06-17 14:49:52.543 | Duration: 0:00:20.939000</div>
         </div>
-        <div class="case-content" id="test_case_1">
+        <div class="case-content" id="test_login_scenario_TC001_CorrectCredentials_">
             <h4>Execution Logs:</h4>
-            <div class="log-entry"><span class="log-time">[10:00:00] Starting test</span></div>
-            <div class="log-entry"><span class="log-time">[10:00:05] Test passed</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:32.973] === Starting test with user: testuser3 ===</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:32.973] Opening login page...</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:41.242] Login page loaded: https://fangdong.fun/login?redirect=/utility</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:41.654] Filling username: 'testuser3'</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:41.733] Filling password: '******'</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:42.201] Clicking login button...</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:42.255] Waiting for page reaction...</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:52.449] WARNING: URL did not change within timeout</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:52.542] Dashboard displayed: True</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:52.542] PASS: Login successful as expected</span></div>
+            <div class="log-entry"><span class="log-time">[14:49:52.542] === Test completed ===</span></div>
             <h4>Screenshots:</h4>
             <div class="screenshot"><div class="screenshot-label">page_loaded</div></div>
-            <div class="screenshot"><div class="screenshot-label">login_success</div></div>
+            <div class="screenshot"><div class="screenshot-label">form_filled</div></div>
+            <div class="screenshot"><div class="screenshot-label">after_login</div></div>
         </div>
     </div>
 </body>

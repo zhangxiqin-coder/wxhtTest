@@ -20,7 +20,7 @@ try:
     login = LoginPage(driver)
     login.open_page()
     time.sleep(2)
-    login.login('testuser3', '123456')
+    login.login('testuser3', '123456pytho')
     time.sleep(3)
 
     print('After login URL:', driver.current_url)
