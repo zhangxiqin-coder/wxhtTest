@@ -11,17 +11,24 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-# 存储测试结果和日志
-_test_logs = {}
+# 存储测试结果和日志（按文件分组）
+_test_logs_by_file = {}  # {filename: {test_name: {data}}}
 _current_test = None
+_current_file = None
 _screenshot_dir = "test_screenshots"
 
 
 def pytest_runtest_setup(item):
     """测试setup阶段"""
-    global _current_test
+    global _current_test, _current_file
     _current_test = item.name
-    _test_logs[_current_test] = {
+    _current_file = os.path.basename(item.location[0])
+    
+    # 初始化文件级别的日志容器
+    if _current_file not in _test_logs_by_file:
+        _test_logs_by_file[_current_file] = {}
+    
+    _test_logs_by_file[_current_file][_current_test] = {
         "start_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3],
         "end_time": None,
         "duration": None,
@@ -29,50 +36,51 @@ def pytest_runtest_setup(item):
         "logs": [],
         "screenshots": []
     }
-    print(f"\n[SETUP] {_current_test} started at {_test_logs[_current_test]['start_time']}")
+    print(f"\n[SETUP] {_current_file} :: {_current_test} started at {_test_logs_by_file[_current_file][_current_test]['start_time']}")
 
 
 def pytest_runtest_teardown(item, nextitem):
     """测试teardown阶段"""
-    global _current_test
-    if _current_test and _current_test in _test_logs:
+    global _current_test, _current_file
+    if _current_file and _current_test and _current_file in _test_logs_by_file and _current_test in _test_logs_by_file[_current_file]:
         end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-        _test_logs[_current_test]["end_time"] = end_time
+        _test_logs_by_file[_current_file][_current_test]["end_time"] = end_time
         
         # 计算耗时
-        start = datetime.datetime.strptime(_test_logs[_current_test]["start_time"], "%Y-%m-%d %H:%M:%S.%f")
+        start = datetime.datetime.strptime(_test_logs_by_file[_current_file][_current_test]["start_time"], "%Y-%m-%d %H:%M:%S.%f")
         end = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S.%f")
-        _test_logs[_current_test]["duration"] = str(end - start)
+        _test_logs_by_file[_current_file][_current_test]["duration"] = str(end - start)
         
-        print(f"[TEARDOWN] {_current_test} finished at {end_time}")
+        print(f"[TEARDOWN] {_current_file} :: {_current_test} finished at {end_time}")
 
 
 def pytest_runtest_logreport(report):
     """实时捕获测试结果"""
-    global _current_test
+    global _current_test, _current_file
     if report.when == "call":
-        if _current_test and _current_test in _test_logs:
+        if _current_file and _current_test and _current_file in _test_logs_by_file and _current_test in _test_logs_by_file[_current_file]:
             if report.passed:
-                _test_logs[_current_test]["status"] = "PASS"
+                _test_logs_by_file[_current_file][_current_test]["status"] = "PASS"
             elif report.failed:
-                _test_logs[_current_test]["status"] = "FAIL"
+                _test_logs_by_file[_current_file][_current_test]["status"] = "FAIL"
                 # 捕获失败原因
                 if hasattr(report, 'longrepr'):
-                    _test_logs[_current_test]["error"] = str(report.longrepr)
+                    _test_logs_by_file[_current_file][_current_test]["error"] = str(report.longrepr)
             elif report.skipped:
-                _test_logs[_current_test]["status"] = "SKIP"
+                _test_logs_by_file[_current_file][_current_test]["status"] = "SKIP"
 
 
 @pytest.fixture
 def test_logger(request):
     """测试日志fixture - 供测试用例记录执行步骤"""
-    global _current_test
-    return TestLogger(_current_test)
+    global _current_test, _current_file
+    return TestLogger(_current_file, _current_test)
 
 
 class TestLogger:
     """测试日志记录器"""
-    def __init__(self, test_name):
+    def __init__(self, file_name, test_name):
+        self.file_name = file_name
         self.test_name = test_name
         self._logs = []
     
@@ -82,25 +90,27 @@ class TestLogger:
         log_entry = f"[{timestamp}] {message}"
         self._logs.append(log_entry)
         print(f"  {log_entry}")
-        if self.test_name and self.test_name in _test_logs:
-            _test_logs[self.test_name]["logs"].append(log_entry)
+        if self.file_name and self.test_name and self.file_name in _test_logs_by_file and self.test_name in _test_logs_by_file[self.file_name]:
+            _test_logs_by_file[self.file_name][self.test_name]["logs"].append(log_entry)
     
     def screenshot(self, step_name):
         """记录截屏"""
-        if self.test_name and self.test_name in _test_logs:
-            _test_logs[self.test_name]["screenshots"].append(step_name)
+        if self.file_name and self.test_name and self.file_name in _test_logs_by_file and self.test_name in _test_logs_by_file[self.file_name]:
+            _test_logs_by_file[self.file_name][self.test_name]["screenshots"].append(step_name)
 
 
-def pytest_sessionfinish(session, exitstatus):
-    """所有测试执行完毕后生成HTML报告"""
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def _generate_html_report(file_name, test_logs, timestamp):
+    """生成单个文件的HTML报告"""
+    passed = sum(1 for r in test_logs.values() if r["status"] == "PASS")
+    failed = sum(1 for r in test_logs.values() if r["status"] == "FAIL")
+    skipped = sum(1 for r in test_logs.values() if r["status"] == "SKIP")
+    total = len(test_logs)
     
-    # 生成详细HTML报告
     html = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Test Report - {timestamp}</title>
+    <title>Test Report - {file_name}</title>
     <style>
         body {{ font-family: 'Consolas', 'Courier New', monospace; margin: 20px; background: #1e1e1e; color: #d4d4d4; }}
         h1 {{ color: #569cd6; border-bottom: 2px solid #569cd6; padding-bottom: 10px; }}
@@ -123,9 +133,6 @@ def pytest_sessionfinish(session, exitstatus):
         .screenshot img {{ max-width: 400px; border: 2px solid #3c3c3c; border-radius: 4px; }}
         .screenshot-label {{ color: #808080; font-size: 12px; margin-top: 5px; }}
         .error {{ background: #3c1e1e; padding: 10px; border-radius: 4px; color: #f14c4c; margin-top: 10px; }}
-        th {{ background: #0e639c !important; color: white !important; }}
-        table {{ width: 100%; border-collapse: collapse; }}
-        th, td {{ border: 1px solid #3c3c3c; padding: 10px; text-align: left; }}
     </style>
     <script>
         function toggleCase(id) {{
@@ -135,18 +142,11 @@ def pytest_sessionfinish(session, exitstatus):
     </script>
 </head>
 <body>
-    <h1>Test Report</h1>
+    <h1>Test Report: {file_name}</h1>
     <div class="summary">
         <p><strong>Report Time:</strong> <span class="timestamp">{timestamp}</span></p>
         <div class="stats">
-"""
-    
-    passed = sum(1 for r in _test_logs.values() if r["status"] == "PASS")
-    failed = sum(1 for r in _test_logs.values() if r["status"] == "FAIL")
-    skipped = sum(1 for r in _test_logs.values() if r["status"] == "SKIP")
-    total = len(_test_logs)
-    
-    html += f"""            <span class="pass">PASS: {passed}</span> | 
+            <span class="pass">PASS: {passed}</span> | 
             <span class="fail">FAIL: {failed}</span> | 
             <span class="skip">SKIP: {skipped}</span> | 
             <span>Total: {total}</span>
@@ -155,7 +155,7 @@ def pytest_sessionfinish(session, exitstatus):
     <h2>Test Cases</h2>
 """
     
-    for name, data in _test_logs.items():
+    for name, data in test_logs.items():
         status_class = data["status"].lower()
         case_id = name.replace("[", "_").replace("]", "_").replace(" ", "_")
         
@@ -177,13 +177,7 @@ def pytest_sessionfinish(session, exitstatus):
         if data["screenshots"]:
             html += "            <h4>Screenshots:</h4>\n"
             for i, shot in enumerate(data["screenshots"], 1):
-                img_path = f"{_screenshot_dir}/{name}_{shot}.png"
-                if os.path.exists(img_path):
-                    html += f"""            <div class="screenshot">
-                <div class="screenshot-label">{shot}</div>
-                <img src="{img_path}" alt="{shot}">
-            </div>
-"""
+                html += f'            <div class="screenshot"><div class="screenshot-label">{shot}</div></div>\n'
         
         # 错误信息
         if data.get("error"):
@@ -194,10 +188,31 @@ def pytest_sessionfinish(session, exitstatus):
     html += """</body>
 </html>"""
     
-    with open("test_report.html", "w", encoding="utf-8") as f:
-        f.write(html)
+    return html
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """所有测试执行完毕后为每个文件生成独立的HTML报告"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    print(f"\n[Test Report] test_report.html generated at {timestamp}")
+    # 创建报告目录
+    if not os.path.exists("test_reports"):
+        os.makedirs("test_reports")
+    
+    # 为每个测试文件生成独立报告
+    for file_name, test_logs in _test_logs_by_file.items():
+        # 生成报告文件名: test_login_pytest.py -> test_login_pytest_log.html
+        report_name = file_name.replace(".py", "_log.html")
+        report_path = os.path.join("test_reports", report_name)
+        
+        html = _generate_html_report(file_name, test_logs, timestamp)
+        
+        with open(report_path, "w", encoding="utf-8") as f:
+            f.write(html)
+        
+        print(f"\n[Test Report] Generated: {report_path}")
+    
+    print(f"\n[Summary] Generated {len(_test_logs_by_file)} report(s) in test_reports/")
 
 
 def retry_on_failure(max_retries=1, delay=1):
